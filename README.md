@@ -20,6 +20,7 @@ startup:
   `IVROverlay` overlays composited *on top of* the running game. The game keeps
   running underneath; quitting the calibration fades back to it, with no relaunch.
   Attaches with `VRApplication_Background`, so it never launches SteamVR itself.
+  On Linux, an OpenXR overlay session is tried first (see below).
 - **OpenXR + Vulkan** (`src/xr_app.cpp`) — used otherwise (native Virtual Desktop,
   standalone runtimes, Monado, etc.), where a focused session evicts nothing. The
   target/panel are head-locked `XrCompositionLayerQuad` layers over an opaque grey
@@ -29,6 +30,10 @@ startup:
   with a synthetic headset. Runs the full session and UDP protocol without VR
   hardware and can dump what each eye sees as PNGs. Used by the tests and for
   previewing layouts.
+
+On Linux, OpenVR is often xrizer or OpenComposite on top of an OpenXR runtime like
+Monado, with incomplete overlay support. There, an OpenXR runtime with
+`XR_EXTX_overlay` is tried before OpenVR.
 
 Force a backend with `--backend=openvr|openxr|sim` (`openxr` restores the
 game-evicting focused-session behaviour on SteamVR).
