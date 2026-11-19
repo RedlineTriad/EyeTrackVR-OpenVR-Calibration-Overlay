@@ -78,7 +78,7 @@ struct EyeGeom {
 
     bool contains_tangent(float tx, float ty) const;
     // True if the head-space point is inside this eye's visible region.
-    bool sees(Vec3 head_point) const;
+    bool sees(Vec3 p) const;
 };
 
 struct ViewGeometry {

@@ -45,7 +45,7 @@ public:
     float panel_alpha() const { return panel_alpha_out_; }
 
 private:
-    enum Slot { CENTER = 0, LOWER = 1, UPPER = 2, SLOT_COUNT };
+    enum Slot { CENTER, LOWER, UPPER, SLOT_COUNT };
 
     struct Circle {
         float x, y, r;
@@ -56,7 +56,7 @@ private:
     void update_panel(const Scene& s, float dt, const ViewGeometry& g);
     void layout_slots(const ViewGeometry& g);
     bool slot_rect(int slot, Rect& r) const;
-    bool collides(const Rect& r, const std::vector<Circle>& cs) const;
+    static bool collides(const Rect& r, const std::vector<Circle>& cs);
     void raster(const PanelContent& c, const ViewGeometry& g);
 
     TextRenderer* text_;

@@ -16,7 +16,7 @@ public:
     virtual bool finished() const = 0;
     // Called once rendering is up and the headset geometry is known (e.g. to
     // emit the "ready" signal).
-    virtual void on_start(UdpNet&) {}
+    virtual void on_start(UdpNet& /*net*/) {}
     // True if this mode receives commands (binds the command port).
     virtual bool needs_recv() const { return false; }
 };

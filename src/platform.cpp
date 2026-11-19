@@ -57,7 +57,7 @@ BOOL WINAPI console_handler(DWORD type) {
     }
 }
 #else
-extern "C" void posix_handler(int) { on_quit_signal(); }
+extern "C" void posix_handler(int /*signal*/) { on_quit_signal(); }
 #endif
 
 }  // namespace

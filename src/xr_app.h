@@ -57,8 +57,8 @@ private:
     bool create_swapchains();
     bool make_swapchain(uint32_t w, uint32_t h, Swapchain& out);
     bool make_quad(uint32_t w, uint32_t h, QuadLayer& q);
-    bool acquire(Swapchain& sc);
-    void release(Swapchain& sc);
+    static bool acquire(Swapchain& sc);
+    static void release(Swapchain& sc);
     void load_visibility_masks();
     void update_geometry(XrTime t);
     // Stage/blit one quad for this frame and fill its composition layer.

@@ -100,9 +100,7 @@ struct TextRenderer::Impl {
     const Font* font_for(char32_t cp, int& glyph) {
         for (const auto& font : fonts) {
             Font& f = *font;
-            if (!f.tried) {
-                if (load_font(f)) std::cout << "[INFO] Loaded fallback font " << f.path << "\n";
-            }
+            if (!f.tried && load_font(f)) std::cout << "[INFO] Loaded fallback font " << f.path << "\n";
             if (!f.ok) continue;
             const int g = stbtt_FindGlyphIndex(&f.info, (int)cp);
             if (g != 0) {

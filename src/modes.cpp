@@ -702,7 +702,8 @@ private:
             case 131:
             case 132:
                 // Pupil-reference illumination: dim, bright, or neutral.
-                backdrop_gray_ = c.code == 130 ? 24 : (c.code == 131 ? 208 : 96);
+                static constexpr uint8_t kGray[] = {24, 208, 96};
+                backdrop_gray_ = kGray[c.code - 130];
                 net.send_int32(22);
                 break;
             case 200:

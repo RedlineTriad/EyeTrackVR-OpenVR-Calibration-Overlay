@@ -50,7 +50,7 @@ private:
     // if the headset is not present or reports unusable values.
     bool compute_geometry();
     bool create(const std::string& name, uint32_t sort, Overlay& o);
-    void apply(Overlay& o, const Quad& q, const Image* img);
+    static void apply(Overlay& o, const Quad& q, const Image* img);
     void apply_backdrop(uint8_t gray, float alpha);
     void destroy_all();
 

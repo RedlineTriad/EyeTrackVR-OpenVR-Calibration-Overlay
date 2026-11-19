@@ -15,7 +15,7 @@ struct Rgba {
     float r, g, b, a;
 };  // 0..255 colour, 0..1 alpha
 
-inline float clamp01(float v) { return v < 0.0f ? 0.0f : (v > 1.0f ? 1.0f : v); }
+inline float clamp01(float v) { return std::clamp(v, 0.0f, 1.0f); }
 inline float smoothstep(float e0, float e1, float x) {
     const float t = clamp01((x - e0) / (e1 - e0));
     return t * t * (3.0f - 2.0f * t);

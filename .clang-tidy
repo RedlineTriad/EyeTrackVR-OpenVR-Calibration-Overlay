@@ -4,6 +4,7 @@ Checks:
   - clang-analyzer-*
   - modernize-*
   - performance-*
+  - readability-*
   # Intentional in geometry, pixel and Vulkan/OpenXR code.
   - -bugprone-easily-swappable-parameters
   - -bugprone-invalid-enum-default-initialization
@@ -16,5 +17,23 @@ Checks:
   - -modernize-use-designated-initializers
   - -modernize-use-nodiscard
   - -modernize-use-trailing-return-type
+  - -readability-braces-around-statements
+  - -readability-function-cognitive-complexity
+  - -readability-identifier-length
+  - -readability-implicit-bool-conversion
+  - -readability-isolate-declaration
+  - -readability-magic-numbers
+  - -readability-math-missing-parentheses
+  - -readability-uppercase-literal-suffix
+  # Conflict with clang-format's layout.
+  - -readability-inconsistent-ifelse-braces
+  - -readability-trailing-comma
+  # False positives on methods that write through member pointers.
+  - -readability-make-member-function-const
+CheckOptions:
+  # The tests' CHECK macros negate whole conditions.
+  readability-simplify-boolean-expr.IgnoreMacros: true
+  # De Morgan's form would accept NaN where !(a < b && ...) rejects it.
+  readability-simplify-boolean-expr.SimplifyDeMorgan: false
 WarningsAsErrors: '*'
 HeaderFilterRegex: '/(src|tests)/'

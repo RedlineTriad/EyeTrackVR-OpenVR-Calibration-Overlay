@@ -243,14 +243,13 @@ bool Presenter::slot_rect(int slot, Rect& r) const {
     return true;
 }
 
-bool Presenter::collides(const Rect& r, const std::vector<Circle>& cs) const {
-    for (const Circle& c : cs) {
-        const float x0 = r.x0 - kPanelMargin, x1 = r.x1 + kPanelMargin;
-        const float y0 = r.y0 - kPanelMargin, y1 = r.y1 + kPanelMargin;
+bool Presenter::collides(const Rect& r, const std::vector<Circle>& cs) {
+    const float x0 = r.x0 - kPanelMargin, x1 = r.x1 + kPanelMargin;
+    const float y0 = r.y0 - kPanelMargin, y1 = r.y1 + kPanelMargin;
+    return std::ranges::any_of(cs, [&](const Circle& c) {
         const float qx = std::clamp(c.x, x0, x1), qy = std::clamp(c.y, y0, y1);
-        if (std::hypot(c.x - qx, c.y - qy) < c.r) return true;
-    }
-    return false;
+        return std::hypot(c.x - qx, c.y - qy) < c.r;
+    });
 }
 
 void Presenter::raster(const PanelContent& c, const ViewGeometry& g) {

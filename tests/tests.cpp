@@ -108,7 +108,7 @@ struct FakeNet : UdpNet {
     std::vector<int32_t> values() const {
         std::vector<int32_t> out;
         out.reserve(sent.size());
-        for (auto& p : sent) out.push_back(p.second);
+        for (const auto& p : sent) out.push_back(p.second);
         return out;
     }
 };
@@ -431,7 +431,7 @@ struct Interactive {
     }
     size_t count(int32_t v) const {
         size_t n = 0;
-        for (auto& s : net.sent) n += s.second == v;
+        for (const auto& s : net.sent) n += s.second == v;
         return n;
     }
 };
@@ -685,10 +685,9 @@ static void layout_run(const std::string& mode_name, const ViewGeometry& vg, Tex
         if (panel && f.dot.visible && f.dot.alpha > 0.02f && speed < 1.5f) {
             const float r = f.dot.w * 0.5f * sprites::kSpriteEdge;
             const float qx = std::clamp(f.dot.x, body.x0, body.x1), qy = std::clamp(f.dot.y, body.y0, body.y1);
-            if (std::hypot(f.dot.x - qx, f.dot.y - qy) < r) {
-                if (st.overlap++ < 3)
-                    std::printf("  overlap %s t=%.2f dot(%.2f,%.2f) panel[%.2f..%.2f]x[%.2f..%.2f]\n", tag.c_str(), t,
-                                f.dot.x, f.dot.y, body.x0, body.x1, body.y0, body.y1);
+            if (std::hypot(f.dot.x - qx, f.dot.y - qy) < r && st.overlap++ < 3) {
+                std::printf("  overlap %s t=%.2f dot(%.2f,%.2f) panel[%.2f..%.2f]x[%.2f..%.2f]\n", tag.c_str(), t,
+                            f.dot.x, f.dot.y, body.x0, body.x1, body.y0, body.y1);
             }
         }
         const float palpha = f.panel.visible ? f.panel.alpha : 0.0f;
