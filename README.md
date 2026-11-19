@@ -165,6 +165,24 @@ Preview what a headset would show:
 EyeTrackVR-Overlay finetune --backend=sim --sim-fast --sim-hmd=beyond2 --sim-dump=frames --sim-debug
 ```
 
+### Linting
+
+CI runs these with the versions pinned in `uv.lock`. Run them locally with
+[uv](https://docs.astral.sh/uv/):
+
+```sh
+uv run clang-format -i src/* tests/*.cpp
+cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+uv run run-clang-tidy.py -quiet -p build '/(src|tests)/(?!stb_image_write)'
+uv run ruff check --fix
+uv run ruff format
+uv run shellcheck $(git ls-files '*.sh')
+uv run actionlint
+uv run zizmor .github
+```
+
+`.clang-tidy` lists the checks it leaves off and why.
+
 ### Runtime folder
 
 Gather the executable, its loaders, the font and license notices into one

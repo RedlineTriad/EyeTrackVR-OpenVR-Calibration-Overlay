@@ -47,4 +47,6 @@ Pipeline per frame: **mode → `Scene` → Presenter → `Frame` → backend**, 
 - **Localisation** (`src/i18n.cpp`): built-in instruction text for every language in the app's `EyeTrackApp/lang/*.toml` (en, de, es, ja, zh), chosen by `--lang`. In interactive mode the app sends its own translated card text (50) *before* each voice prompt; pass/centre commands keep text that is already up instead of replacing it. Adding an app language: add a catalog here too (the app's `tests/test_overlay_localization.py` checks `--list-langs`).
 - **Platform** (`src/platform.cpp`): exe dir, Ctrl+C/SIGTERM → graceful outro (second signal exits immediately), parent-process watchdog (interactive mode closes if the app dies), fallback fonts. `src/net.cpp`: exclusive bind of the command port, asks a leftover instance to quit (200) and retries.
 
+Lint and format with the tools pinned in `uv.lock` (clang-format, clang-tidy, Ruff, ShellCheck, actionlint, zizmor). README.md § Linting has the commands CI runs.
+
 Tests: `tests/tests.cpp` (unit; layout invariants run every mode × every sim headset × several cap configs) and `tests/protocol_test.py` (real exe over UDP). CTest registers each unit suite and layout shard separately (`etvr_tests <suite> [shard/shards]`; no arguments runs everything).
