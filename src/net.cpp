@@ -24,7 +24,7 @@ static constexpr long long kInvalid = (long long)INVALID_SOCKET;
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <errno.h>
+#include <cerrno>
 using nativesock = int;
 static constexpr long long kInvalid = -1;
 #define CLOSESOCK ::close
@@ -98,7 +98,7 @@ bool UdpNet::init_send(uint16_t send_port) {
         std::cout << "[ERROR] socket startup failed\n";
         return false;
     }
-    long long s = (long long)socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    auto s = static_cast<long long>(socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP));
     if (s == kInvalid) {
         std::cout << "[ERROR] failed to create send socket (" << last_error() << ")\n";
         return false;
@@ -119,7 +119,7 @@ bool UdpNet::init_send(uint16_t send_port) {
 
 bool UdpNet::init_recv(uint16_t recv_port, double wait_s) {
     if (!ensure_started()) return false;
-    long long s = (long long)socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    auto s = static_cast<long long>(socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP));
     if (s == kInvalid) {
         std::cout << "[ERROR] failed to create recv socket (" << last_error() << ")\n";
         return false;

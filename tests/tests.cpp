@@ -25,6 +25,7 @@
 #include <limits>
 #include <random>
 #include <string>
+#include <utility>
 #include <vector>
 
 #ifndef ETVR_FONT
@@ -58,7 +59,7 @@ struct FakeNet : UdpNet {
     std::vector<std::pair<double, int32_t>> sent;
     std::deque<std::vector<unsigned char>> inbox;
 
-    void send_int32(int32_t v) override { sent.push_back({now, v}); }
+    void send_int32(int32_t v) override { sent.emplace_back(now, v); }
     int recv(void* buf, int len) override {
         if (inbox.empty()) return 0;
         auto d = inbox.front();
@@ -171,7 +172,7 @@ static void test_text() {
     CHECK(img.w <= TextRenderer::kMaxWidth && img.h <= TextRenderer::kMaxHeight);
     size_t opaque = 0;
     for (size_t i = 3; i < img.rgba.size(); i += 4) opaque += img.rgba[i] > 200;
-    CHECK(opaque > (size_t)(img.w * img.h / 3));
+    CHECK(std::cmp_greater(opaque, img.w * img.h / 3));
     const uint64_t v0 = img.version;
     pc.text = std::string(2000, 'W') + "\n" + std::string(3000, 'x') + " a b c";
     pc.tone = Tone::Success;
@@ -906,14 +907,14 @@ static void test_i18n() {
     const auto langs = i18n::languages();
     CHECK(!langs.empty() && langs[0] == "en");
     for (const char* want : {"en", "de", "es", "ja", "zh"})
-        CHECKM(std::find(langs.begin(), langs.end(), want) != langs.end(), "missing language %s", want);
+        CHECKM(std::ranges::find(langs, want) != langs.end(), "missing language %s", want);
     for (const auto& l : langs) {
         CHECK(i18n::set_language(l) == l);
         for (int i = 0; i < (int)i18n::Str::Count; ++i) {
             const char* s = i18n::tr((i18n::Str)i);
             CHECKM(s && *s, "%s: empty string %d", l.c_str(), i);
             const std::u32string u = decode_utf8(s);
-            CHECKM(std::find(u.begin(), u.end(), (char32_t)0xFFFD) == u.end(), "%s: bad UTF-8 in %d", l.c_str(), i);
+            CHECKM(std::ranges::find(u, (char32_t)0xFFFD) == u.end(), "%s: bad UTF-8 in %d", l.c_str(), i);
         }
         if (l != "en")
             CHECKM(std::string(i18n::tr(i18n::Str::FollowTitle)) != "Follow the dot", "%s untranslated", l.c_str());

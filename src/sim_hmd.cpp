@@ -45,7 +45,7 @@ std::vector<Vec2> lens(float l, float r, float u, float d, float n) {
 
 std::vector<std::string> sim_hmd_names() {
     std::vector<std::string> out;
-    for (const auto& p : kProfiles) out.push_back(p.name);
+    for (const auto& p : kProfiles) out.emplace_back(p.name);
     return out;
 }
 

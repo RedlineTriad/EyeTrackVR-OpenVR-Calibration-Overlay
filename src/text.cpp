@@ -6,6 +6,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <utility>
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include <stb_truetype.h>
@@ -97,8 +98,8 @@ struct TextRenderer::Impl {
 
     // First font (primary, then fallbacks in order) that has the glyph.
     const Font* font_for(char32_t cp, int& glyph) {
-        for (size_t i = 0; i < fonts.size(); ++i) {
-            Font& f = *fonts[i];
+        for (const auto& font : fonts) {
+            Font& f = *font;
             if (!f.tried) {
                 if (load_font(f)) std::cout << "[INFO] Loaded fallback font " << f.path << "\n";
             }
@@ -171,7 +172,7 @@ struct TextRenderer::Impl {
                 line = trial;
         }
         flush();
-        if ((int)out.size() > max_lines) {
+        if (std::cmp_greater(out.size(), max_lines)) {
             out.resize((size_t)max_lines);
             std::u32string& last = out.back();
             while (!last.empty() && layout(last + U"…", em, nullptr) > max_w) last.pop_back();
@@ -331,7 +332,7 @@ void TextRenderer::render_panel(const PanelContent& content, int max_body_px, Im
     const int H = std::min(kMaxHeight, (int)body_h + 2 * kShadowPad);
     raster::alloc(out, W, H);
 
-    const float bx = (float)kShadowPad, by = (float)kShadowPad;
+    const auto bx = static_cast<float>(kShadowPad), by = bx;
     const float bw = (float)W - 2.0f * kShadowPad, bh = (float)H - 2.0f * kShadowPad;
     const float ccx = bx + bw * 0.5f, ccy = by + bh * 0.5f;
 
@@ -484,7 +485,7 @@ std::string normalize_instruction(const std::string& s) {
         line.clear();
     };
     for (char ch : s) {
-        const unsigned char c = (unsigned char)ch;
+        const auto c = static_cast<unsigned char>(ch);
         if (c == '\n') {
             flush();
             continue;

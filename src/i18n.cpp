@@ -147,7 +147,7 @@ std::string language() { return g_active->code; }
 
 std::vector<std::string> languages() {
     std::vector<std::string> out;
-    for (const Catalog& c : kCatalogs) out.push_back(c.code);
+    for (const Catalog& c : kCatalogs) out.emplace_back(c.code);
     return out;
 }
 

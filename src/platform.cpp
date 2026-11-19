@@ -196,10 +196,10 @@ std::vector<std::string> fallback_fonts(const std::string& lang) {
              "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc",
              "/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf",
          })
-        out.push_back(f);
+        out.emplace_back(f);
 #endif
     if (lang == "ja") {
-        std::stable_partition(out.begin(), out.end(), [](const std::string& p) {
+        std::ranges::stable_partition(out, [](const std::string& p) {
             return p.find("YuGoth") != std::string::npos || p.find("meiryo") != std::string::npos;
         });
     }

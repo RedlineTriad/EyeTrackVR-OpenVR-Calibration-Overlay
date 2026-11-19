@@ -1,11 +1,20 @@
-Checks: >
-  bugprone-*,
-  clang-analyzer-*,
-  performance-*,
-  -bugprone-easily-swappable-parameters,
-  -bugprone-invalid-enum-default-initialization,
-  -bugprone-narrowing-conversions,
-  -bugprone-signed-bitwise,
-  -performance-enum-size
+Checks:
+  - -*
+  - bugprone-*
+  - clang-analyzer-*
+  - modernize-*
+  - performance-*
+  # Intentional in geometry, pixel and Vulkan/OpenXR code.
+  - -bugprone-easily-swappable-parameters
+  - -bugprone-invalid-enum-default-initialization
+  - -bugprone-narrowing-conversions
+  - -bugprone-signed-bitwise
+  - -performance-enum-size
+  # Style rules that would rewrite most of the code base.
+  - -modernize-avoid-c-arrays
+  - -modernize-avoid-c-style-cast
+  - -modernize-use-designated-initializers
+  - -modernize-use-nodiscard
+  - -modernize-use-trailing-return-type
 WarningsAsErrors: '*'
 HeaderFilterRegex: '/(src|tests)/'

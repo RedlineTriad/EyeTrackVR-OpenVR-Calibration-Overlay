@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <numbers>
 
 // Minimal vector/quaternion types shared by the geometry, presenter and
 // backends. Kept free of OpenXR/OpenVR headers so the core logic (and its unit
@@ -45,6 +46,6 @@ inline Quat operator*(Quat a, Quat b) {
             a.w * b.z + a.x * b.y - a.y * b.x + a.z * b.w, a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z};
 }
 
-inline constexpr float kPi = 3.14159265358979323846f;
+inline constexpr float kPi = std::numbers::pi_v<float>;
 inline constexpr float kDeg2Rad = kPi / 180.0f;
 inline constexpr float kRad2Deg = 180.0f / kPi;

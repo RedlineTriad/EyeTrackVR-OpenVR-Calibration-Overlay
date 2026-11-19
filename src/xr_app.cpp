@@ -9,6 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include <thread>
+#include <utility>
 
 namespace {
 
@@ -431,8 +432,8 @@ void XrApp::release(Swapchain& sc) {
 }
 
 bool XrApp::prepare_quad(VkCommandBuffer cmd, QuadLayer& q, const Quad& quad, const Image* img) {
-    if (!quad.visible || quad.alpha <= 0.002f || !img || img->w <= 0 || (uint32_t)img->w > q.tex.w ||
-        (uint32_t)img->h > q.tex.h)
+    if (!quad.visible || quad.alpha <= 0.002f || !img || img->w <= 0 || std::cmp_greater(img->w, q.tex.w) ||
+        std::cmp_greater(img->h, q.tex.h))
         return false;
     // Quantised layer opacity, applied to the texture's alpha on the CPU (no
     // reliance on per-layer colour-scale extensions, which runtimes vary on).
@@ -447,7 +448,7 @@ bool XrApp::prepare_quad(VkCommandBuffer cmd, QuadLayer& q, const Quad& quad, co
     }
     if (!acquire(q.sc)) return false;
     record_blit(cmd, q.tex, (uint32_t)q.cw, (uint32_t)q.ch, q.sc.images[q.sc.acquired], (uint32_t)q.cw, (uint32_t)q.ch,
-                (uint32_t)q.cw < q.sc.w || (uint32_t)q.ch < q.sc.h);
+                std::cmp_less(q.cw, q.sc.w) || std::cmp_less(q.ch, q.sc.h));
 
     q.layer = XrCompositionLayerQuad{XR_TYPE_COMPOSITION_LAYER_QUAD};
     q.layer.layerFlags =

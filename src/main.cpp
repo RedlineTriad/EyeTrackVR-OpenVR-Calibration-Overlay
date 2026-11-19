@@ -227,40 +227,40 @@ int main(int argc, char** argv) {
         long n = 0;
         if (is_mode_name(arg))
             mode_name = arg;
-        else if (arg.rfind("--lang=", 0) == 0)
+        else if (arg.starts_with("--lang="))
             lang_arg = arg.substr(7);
-        else if (arg.rfind("--runtime=", 0) == 0)
+        else if (arg.starts_with("--runtime="))
             runtime_arg = arg.substr(10);
-        else if (arg.rfind("--backend=", 0) == 0)
+        else if (arg.starts_with("--backend="))
             backend_arg = arg.substr(10);
-        else if (arg.rfind("--coverage=", 0) == 0)
+        else if (arg.starts_with("--coverage="))
             parse_float(arg, 11, 0.0f, 1.0f, true, fov.coverage);
-        else if (arg.rfind("--max-deg=", 0) == 0)
+        else if (arg.starts_with("--max-deg="))
             parse_float(arg, 10, 0.0f, 90.0f, false, fov.max_deg);
-        else if (arg.rfind("--max-deg-up=", 0) == 0)
+        else if (arg.starts_with("--max-deg-up="))
             parse_float(arg, 13, 0.0f, 90.0f, false, fov.max_deg_up);
-        else if (arg.rfind("--max-deg-down=", 0) == 0)
+        else if (arg.starts_with("--max-deg-down="))
             parse_float(arg, 15, 0.0f, 90.0f, false, fov.max_deg_down);
-        else if (arg.rfind("--center-deg=", 0) == 0)
+        else if (arg.starts_with("--center-deg="))
             parse_float(arg, 13, -45.0f, 45.0f, false, fov.center_deg);
-        else if (arg.rfind("--sim-hmd=", 0) == 0)
+        else if (arg.starts_with("--sim-hmd="))
             sim.hmd = arg.substr(10);
-        else if (arg.rfind("--sim-dump=", 0) == 0)
+        else if (arg.starts_with("--sim-dump="))
             sim.dump_dir = arg.substr(11);
-        else if (arg.rfind("--sim-dump-every=", 0) == 0) {
+        else if (arg.starts_with("--sim-dump-every=")) {
             if (parse_int(arg, 17, 1, 100000, n)) sim.dump_every = (int)n;
-        } else if (arg.rfind("--sim-seconds=", 0) == 0) {
+        } else if (arg.starts_with("--sim-seconds=")) {
             float s = 0;
             if (parse_float(arg, 14, 0.0f, 86400.0f, true, s)) sim.max_seconds = s;
         } else if (arg == "--sim-fast")
             sim.fast = true;
         else if (arg == "--sim-debug")
             sim.debug = true;
-        else if (arg.rfind("--sim-eye-px=", 0) == 0) {
+        else if (arg.starts_with("--sim-eye-px=")) {
             if (parse_int(arg, 13, 64, 4096, n)) sim.eye_px = (int)n;
-        } else if (arg.rfind("--signal-port=", 0) == 0)
+        } else if (arg.starts_with("--signal-port="))
             parse_int(arg, 14, 1, 65535, signal_port);
-        else if (arg.rfind("--cmd-port=", 0) == 0)
+        else if (arg.starts_with("--cmd-port="))
             parse_int(arg, 11, 1, 65535, cmd_port);
         else if (arg == "--no-parent-watch")
             parent_watch = false;
